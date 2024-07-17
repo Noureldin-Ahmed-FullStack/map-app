@@ -20,17 +20,17 @@ function decimalDegreesToDMS(decimal) {
 }
 
 // Utility function to convert DMS format to decimal degrees
-function DMStoDecimalDegrees(dms) {
-    const regex = /(\d+)°\s*(\d+)'?\s*(\d+\.?\d*)"?/;
-    const matches = dms.match(regex);
-    if (!matches) return null;
+// function DMStoDecimalDegrees(dms) {
+//     const regex = /(\d+)°\s*(\d+)'?\s*(\d+\.?\d*)"?/;
+//     const matches = dms.match(regex);
+//     if (!matches) return null;
 
-    const degrees = parseFloat(matches[1]);
-    const minutes = parseFloat(matches[2]);
-    const seconds = parseFloat(matches[3]);
+//     const degrees = parseFloat(matches[1]);
+//     const minutes = parseFloat(matches[2]);
+//     const seconds = parseFloat(matches[3]);
 
-    return degrees + (minutes / 60) + (seconds / 3600);
-}
+//     return degrees + (minutes / 60) + (seconds / 3600);
+// }
 const MapComponent = () => {
     const [position, setPosition] = useState([28.26, 29.79]);
     const [Error, setError] = useState(false)
@@ -81,16 +81,7 @@ const MapComponent = () => {
 
             <Alert sx={{opacity: Error? '100%':'0%'}} className='mb-3' severity="error"><h4>Please enter the Coordinates in this format: <span>00° 00' 00.00"</span></h4></Alert>
             <div className="row">
-                <div className="col-md-9">
-                    <MapContainer center={position} zoom={4} style={{ height: '400px', width: '100%' }}>
-                        <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        //   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        />
-                        <LocationMarker />
-                    </MapContainer>
-                </div>
-                <div className="col-md-3">
+            <div className="col-md-4">
                     <div className='h-100'>
                         <form
                             className='d-flex flex-column h-100 justify-content-center'
@@ -130,6 +121,16 @@ const MapComponent = () => {
                         </form>
                     </div>
                 </div>
+                <div className="col-md-8">
+                    <MapContainer center={position} zoom={4} style={{ height: '400px', width: '100%' }}>
+                        <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        //   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                        <LocationMarker />
+                    </MapContainer>
+                </div>
+                
 
 
             </div>
