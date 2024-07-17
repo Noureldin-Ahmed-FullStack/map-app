@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Alert, TextField } from '@mui/material';
+import { Alert, Button, TextField } from '@mui/material';
 import "leaflet/dist/leaflet.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import L from "leaflet";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
+import { toast } from 'react-toastify';
 let DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow,
@@ -53,6 +54,32 @@ const MapComponent = () => {
         }
 
     };
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (Error) {
+            toast.error("Please enter the Coordinates in this format: 00° 00' 00.00", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return
+        }
+        toast.success("Form submitted successfully!", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
     const LocationMarker = () => {
         useMapEvents({
             click(e) {
@@ -85,7 +112,7 @@ const MapComponent = () => {
                     <div className='h-100'>
                         <form
                             className='d-flex flex-column h-100 justify-content-center'
-                            onSubmit={handleInputChange}
+                            onSubmit={handleSubmit}
                         >
                             {/* <input type="number" placeholder="Latitude" id="lat-input" required /> */}
                             <TextField
@@ -117,6 +144,7 @@ const MapComponent = () => {
                                     shrink: true,
                                 }}
                             />
+                            <Button color='secondary' variant='outlined' type='submit'>Submit</Button>
                             {/* <button type='submit'>Go to Coordinates</button> */}
                         </form>
                     </div>
