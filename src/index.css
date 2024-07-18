@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+PE&display=swap');
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -9,22 +10,43 @@ body {
   flex-direction: column;
   flex-grow: 1;
 }
-
-html {
-  height: 100%;
-  display: flex !important;
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100%;
+  flex-grow: 1;
   flex-direction: column;
 }
-
+html{
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+  /* min-height: 100vh; */
+  justify-content: center;
+}
 #root {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   color: white;
-  background-color: rgb(34, 34, 34);
+  /* background-color: rgb(34, 34, 34); */
+  
+  background-image: url('https://ssniper.sirv.com/Images/vecteezy_abstract-purple-fluid-wave-background_6868933.jpg');
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+.playwrite {
+  font-family: "Playwrite PE", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }

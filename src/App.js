@@ -19,7 +19,7 @@ function App() {
       <ThemeProvider theme={theme}>
         
       <ToastContainer />
-        <h1>Map app in React 🌟</h1>
+        <h1 className='mt-3 playwrite'>Map app in React</h1>
         <MapComponent />
       </ThemeProvider>
     </div>
