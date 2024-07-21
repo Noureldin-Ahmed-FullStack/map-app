@@ -3,14 +3,12 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
@@ -18,16 +16,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Preview() {
+export default function Preview({Data}) {
     const [open, setOpen] = React.useState(false);
-    const [Data, setData] = React.useState(null);
-    React.useEffect(() => {
-        const localData = localStorage.getItem('data')
-        if (localData) {
-            console.log(JSON.parse(localData));
-            setData(JSON.parse(localData))
-        }
-    }, [open])
 
     const handleClickOpen = () => {
         setOpen(true);

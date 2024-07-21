@@ -19,25 +19,25 @@ let DefaultIcon = L.icon({
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
-function decimalDegreesToDMS(decimal) {
-    const degrees = Math.floor(decimal);
+function decimalDegreesToDMS(decimal) { 
+    const degrees = Math.floor(decimal); 
     const minutes = Math.floor((decimal - degrees) * 60);
     const seconds = ((decimal - degrees - (minutes / 60)) * 3600).toFixed(2);
     return `${degrees}° ${minutes}' ${seconds}"`;
 }
 
 // Utility function to convert DMS format to decimal degrees
-function DMStoDecimalDegrees(dms) {
-    const regex = /(\d+)°\s*(\d+)'?\s*(\d+\.?\d*)"?/;
-    const matches = dms.match(regex);
-    if (!matches) return null;
+// function DMStoDecimalDegrees(dms) {
+//     const regex = /(\d+)°\s*(\d+)'?\s*(\d+\.?\d*)"?/;
+//     const matches = dms.match(regex);
+//     if (!matches) return null;
 
-    const degrees = parseFloat(matches[1]);
-    const minutes = parseFloat(matches[2]);
-    const seconds = parseFloat(matches[3]);
+//     const degrees = parseFloat(matches[1]);
+//     const minutes = parseFloat(matches[2]);
+//     const seconds = parseFloat(matches[3]);
 
-    return degrees + (minutes / 60) + (seconds / 3600);
-}
+//     return degrees + (minutes / 60) + (seconds / 3600);
+// }
 const MapComponent = () => {
     const [position, setPosition] = useState([28.26, 29.79]);
     const [Error, setError] = useState(false)
@@ -49,6 +49,15 @@ const MapComponent = () => {
     const handleCountryChange = (event) => {
         setCountry(event.target.value);
     };
+    
+    const [Data, setData] = React.useState(null);
+    React.useEffect(() => {
+        const localData = localStorage.getItem('data')
+        if (localData) {
+            console.log(JSON.parse(localData));
+            setData(JSON.parse(localData))
+        }
+    }, [])
     const handleInputChange = (e) => {
         e.preventDefault()
         const lat = parseFloat(document.getElementById('lat-input').value);
@@ -71,7 +80,7 @@ const MapComponent = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (Error) {
-            toast.error("Please enter the Coordinates in this format: 00° 00' 00.00", {
+            toast.error("Please enter the Coordinates in this format: 00° 00' 00.00 or 00.00", {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -100,6 +109,7 @@ const MapComponent = () => {
             Postal: formJson.Postal,
         }
         console.log(data)
+        setData(data)
         localStorage.setItem('data', JSON.stringify(data))
         toast.success("Form submitted successfully!", {
             position: "top-center",
@@ -137,8 +147,8 @@ const MapComponent = () => {
     return (
         <div className='container'>
             {/* <h2 className='alert alert-danger'>Please enter the Coordinates in this format: <br /> <span>00° 00' 00.00"</span></h2> */}
-<Preview />
-            <Alert sx={{ display: Error ? '' : 'none' }} className='mb-3' severity="error"><h4>Please enter the Coordinates in this format: <span>00° 00' 00.00"</span></h4></Alert>
+            <Preview Data={Data}/>
+            <Alert sx={{ display: Error ? '' : 'none' }} className='mb-3' severity="error"><h4>Please enter the Coordinates in this format: <span>00° 00' 00.00"</span>  or 00.00</h4></Alert>
             <form
                 className='d-flex flex-column h-100 justify-content-center'
                 onSubmit={handleSubmit}
@@ -265,7 +275,6 @@ const MapComponent = () => {
                                     </div>
                                     <div className="col-12">
                                         <TextField
-                                            required
                                             variant='filled'
                                             fullWidth
                                             type='text'
@@ -334,7 +343,7 @@ const MapComponent = () => {
 
 
                             {/* <Button sx={{color:'white',backgroundColor:'#732d91'}} fullWidth className='my-2 mb-3' variant='contained' type='submit'>Submit</Button> */}
-                            <button className="btn-flip p-0 w-100 my-3" style={{background: 'transparent',border:'0px'}} data-back="Submit now!" data-front="Submit" type='submit'></button>
+                            <button className="btn-flip p-0 w-100 my-3" style={{ background: 'transparent', border: '0px' }} data-back="Submit now!" data-front="Submit" type='submit'></button>
                             {/* <a className="btn-flip" data-back="Back" data-front="Front"></a>     */}
                         </div>
                     </div>
