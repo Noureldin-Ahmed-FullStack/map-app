@@ -3,11 +3,13 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Alert, Button, MenuItem, Select, TextField } from '@mui/material';
 import "leaflet/dist/leaflet.css";
+import "./App.css"
 import icon from "leaflet/dist/images/marker-icon.png";
 import L from "leaflet";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 import { toast } from 'react-toastify';
 import countryList from 'react-select-country-list';
+import Preview from './Preview';
 let DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow,
@@ -25,17 +27,17 @@ function decimalDegreesToDMS(decimal) {
 }
 
 // Utility function to convert DMS format to decimal degrees
-// function DMStoDecimalDegrees(dms) {
-//     const regex = /(\d+)°\s*(\d+)'?\s*(\d+\.?\d*)"?/;
-//     const matches = dms.match(regex);
-//     if (!matches) return null;
+function DMStoDecimalDegrees(dms) {
+    const regex = /(\d+)°\s*(\d+)'?\s*(\d+\.?\d*)"?/;
+    const matches = dms.match(regex);
+    if (!matches) return null;
 
-//     const degrees = parseFloat(matches[1]);
-//     const minutes = parseFloat(matches[2]);
-//     const seconds = parseFloat(matches[3]);
+    const degrees = parseFloat(matches[1]);
+    const minutes = parseFloat(matches[2]);
+    const seconds = parseFloat(matches[3]);
 
-//     return degrees + (minutes / 60) + (seconds / 3600);
-// }
+    return degrees + (minutes / 60) + (seconds / 3600);
+}
 const MapComponent = () => {
     const [position, setPosition] = useState([28.26, 29.79]);
     const [Error, setError] = useState(false)
@@ -84,8 +86,8 @@ const MapComponent = () => {
         const formData = new FormData(e.currentTarget);
         const formJson = Object.fromEntries((formData).entries());
         const data = {
-            latitude: position[0],
-            longitude: position[1],
+            latitude: formJson.lat_input,
+            longitude: formJson.lng_input,
             email: formJson.email,
             First_Name: formJson.FirstName,
             Second_name: formJson.SecondName,
@@ -93,10 +95,12 @@ const MapComponent = () => {
             StreetAddress: formJson.StreetAddress,
             StreetAddress2: formJson.StreetAddress2,
             City: formJson.City,
+            Country: formJson.Country,
+            Region: formJson.Region,
             Postal: formJson.Postal,
         }
         console.log(data)
-        localStorage.setItem('data', data)
+        localStorage.setItem('data', JSON.stringify(data))
         toast.success("Form submitted successfully!", {
             position: "top-center",
             autoClose: 5000,
@@ -133,7 +137,7 @@ const MapComponent = () => {
     return (
         <div className='container'>
             {/* <h2 className='alert alert-danger'>Please enter the Coordinates in this format: <br /> <span>00° 00' 00.00"</span></h2> */}
-
+<Preview />
             <Alert sx={{ display: Error ? '' : 'none' }} className='mb-3' severity="error"><h4>Please enter the Coordinates in this format: <span>00° 00' 00.00"</span></h4></Alert>
             <form
                 className='d-flex flex-column h-100 justify-content-center'
@@ -145,8 +149,10 @@ const MapComponent = () => {
                             <div className="col-6">
                                 <TextField
                                     required
+                                    variant='filled'
                                     placeholder="Latitude"
                                     id="lat-input"
+                                    name="lat_input"
                                     label="Latitude"
                                     type="text"
                                     fullWidth
@@ -162,8 +168,10 @@ const MapComponent = () => {
                             <div className="col-6">
                                 <TextField
                                     required
+                                    variant='filled'
                                     placeholder="Longitude"
                                     id="lng-input"
+                                    name="lng_input"
                                     label="Longitude "
                                     type="text"
                                     fullWidth
@@ -196,6 +204,7 @@ const MapComponent = () => {
                                     <div className="col-6">
                                         <TextField
                                             required
+                                            variant='filled'
                                             fullWidth
                                             type='text'
                                             name='FirstName'
@@ -207,6 +216,7 @@ const MapComponent = () => {
                                     <div className="col-6">
                                         <TextField
                                             required
+                                            variant='filled'
                                             fullWidth
                                             type='text'
                                             placeholder="SecondName"
@@ -218,6 +228,7 @@ const MapComponent = () => {
                                     <div className="col-12 my-2">
                                         <TextField
                                             required
+                                            variant='filled'
                                             fullWidth
                                             type='tel'
                                             placeholder="Phone"
@@ -229,6 +240,7 @@ const MapComponent = () => {
                                     <div className="col-12">
                                         <TextField
                                             required
+                                            variant='filled'
                                             fullWidth
                                             type='email'
                                             name='email'
@@ -241,30 +253,33 @@ const MapComponent = () => {
                                     <div className="col-12">
                                         <TextField
                                             required
+                                            variant='filled'
                                             fullWidth
                                             type='text'
                                             placeholder="Street Address"
                                             id="StreetAddress"
                                             name="StreetAddress"
                                             label="Street Address"
-                                            className='my-2'
+                                            className='my-1'
                                         />
                                     </div>
                                     <div className="col-12">
                                         <TextField
                                             required
+                                            variant='filled'
                                             fullWidth
                                             type='text'
                                             placeholder="Street Address Line 2"
                                             id="StreetAddress2"
                                             name="StreetAddress2"
                                             label="Street Address Line 2"
-                                            className='my-2'
+                                            className='my-1 mb-2'
                                         />
                                     </div>
                                     <div className="col-6">
                                         <TextField
                                             required
+                                            variant='filled'
                                             fullWidth
                                             type='text'
                                             placeholder="City"
@@ -276,6 +291,7 @@ const MapComponent = () => {
                                     <div className="col-6">
                                         <TextField
                                             required
+                                            variant='filled'
                                             fullWidth
                                             type='text'
                                             placeholder="Region"
@@ -284,9 +300,10 @@ const MapComponent = () => {
                                             label="Region"
                                         />
                                     </div>
-                                    <div className="col-6 mt-1">
+                                    <div className="col-6 mt-2">
                                         <TextField
                                             required
+                                            variant='filled'
                                             fullWidth
                                             type='text'
                                             placeholder="Postal"
@@ -295,7 +312,7 @@ const MapComponent = () => {
                                             label="Postal / Zip code"
                                         />
                                     </div>
-                                    <div className="col-6 mt-1">
+                                    <div className="col-6 mt-2">
                                         <Select
                                             labelId="Country"
                                             id="Country"
@@ -316,8 +333,9 @@ const MapComponent = () => {
 
 
 
-                            <Button color='secondary' fullWidth className='my-2 mb-3' variant='outlined' type='submit'>Submit</Button>
-                            {/* <button type='submit'>Go to Coordinates</button> */}
+                            {/* <Button sx={{color:'white',backgroundColor:'#732d91'}} fullWidth className='my-2 mb-3' variant='contained' type='submit'>Submit</Button> */}
+                            <button className="btn-flip p-0 w-100 my-3" style={{background: 'transparent',border:'0px'}} data-back="Submit now!" data-front="Submit" type='submit'></button>
+                            {/* <a className="btn-flip" data-back="Back" data-front="Front"></a>     */}
                         </div>
                     </div>
 
