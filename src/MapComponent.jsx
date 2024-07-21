@@ -81,6 +81,22 @@ const MapComponent = () => {
             });
             return
         }
+        const formData = new FormData(e.currentTarget);
+        const formJson = Object.fromEntries((formData).entries());
+        const data = {
+            latitude: position[0],
+            longitude: position[1],
+            email: formJson.email,
+            First_Name: formJson.FirstName,
+            Second_name: formJson.SecondName,
+            Phone: formJson.Phone,
+            StreetAddress: formJson.StreetAddress,
+            StreetAddress2: formJson.StreetAddress2,
+            City: formJson.City,
+            Postal: formJson.Postal,
+        }
+        console.log(data)
+        localStorage.setItem('data', data)
         toast.success("Form submitted successfully!", {
             position: "top-center",
             autoClose: 5000,
@@ -182,6 +198,7 @@ const MapComponent = () => {
                                             required
                                             fullWidth
                                             type='text'
+                                            name='FirstName'
                                             placeholder="FirstName"
                                             id="FirstName"
                                             label="First Name"
@@ -194,6 +211,7 @@ const MapComponent = () => {
                                             type='text'
                                             placeholder="SecondName"
                                             id="SecondName"
+                                            name='SecondName'
                                             label="Second Name"
                                         />
                                     </div>
@@ -204,6 +222,7 @@ const MapComponent = () => {
                                             type='tel'
                                             placeholder="Phone"
                                             id="Phone"
+                                            name='Phone'
                                             label="Phone no."
                                         />
                                     </div>
@@ -212,6 +231,7 @@ const MapComponent = () => {
                                             required
                                             fullWidth
                                             type='email'
+                                            name='email'
                                             placeholder="email"
                                             id="email"
                                             label="email"
@@ -225,8 +245,9 @@ const MapComponent = () => {
                                             type='text'
                                             placeholder="Street Address"
                                             id="StreetAddress"
+                                            name="StreetAddress"
                                             label="Street Address"
-                                            className='mb-1'
+                                            className='my-2'
                                         />
                                     </div>
                                     <div className="col-12">
@@ -236,17 +257,19 @@ const MapComponent = () => {
                                             type='text'
                                             placeholder="Street Address Line 2"
                                             id="StreetAddress2"
+                                            name="StreetAddress2"
                                             label="Street Address Line 2"
-                                            className='mb-1'
+                                            className='my-2'
                                         />
                                     </div>
                                     <div className="col-6">
                                         <TextField
                                             required
                                             fullWidth
-                                            type='tel'
+                                            type='text'
                                             placeholder="City"
                                             id="City"
+                                            name="City"
                                             label="City"
                                         />
                                     </div>
@@ -257,6 +280,7 @@ const MapComponent = () => {
                                             type='text'
                                             placeholder="Region"
                                             id="Region"
+                                            name="Region"
                                             label="Region"
                                         />
                                     </div>
@@ -267,6 +291,7 @@ const MapComponent = () => {
                                             type='text'
                                             placeholder="Postal"
                                             id="Postal"
+                                            name="Postal"
                                             label="Postal / Zip code"
                                         />
                                     </div>
@@ -274,15 +299,16 @@ const MapComponent = () => {
                                         <Select
                                             labelId="Country"
                                             id="Country"
+                                            name="Country"
                                             value={Country}
                                             onChange={handleCountryChange}
                                             label="Country"
                                             fullWidth
                                         >
-                                            {options.map((opt)=>(
+                                            {options.map((opt) => (
                                                 <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
                                             ))}
-                                            
+
                                         </Select>
                                     </div>
                                 </div>
